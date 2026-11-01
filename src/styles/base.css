@@ -1,0 +1,337 @@
+/* ═══════════════════════════════════════════════════════════
+   SwigPort — base: tokens, themes, reset, type, grid
+   Everything is drawn on a 1440px canvas (8 columns × 162px,
+   16px gutters) and scales fluidly with the viewport, the same
+   way the reference build does: 1rem = 1vw, 1 design px = --px.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --sr: 14.4;
+  --px: calc(1rem / var(--sr));
+  --cols: 8;
+  --pad: calc(16 * var(--px));
+  --gap: calc(16 * var(--px));
+  --cell: calc(162 * var(--px));
+  --stroke: 1px;
+
+  --h1: calc(90 * var(--px));
+  --h1-lh: 0.88;
+  --h1-ls: -0.05em;
+  --h2: calc(40 * var(--px));
+  --h2-lh: 0.86;
+  --h2-ls: -0.04em;
+  --p1: calc(14 * var(--px));
+  --p1-lh: 1.0715;
+  --p1-ls: -0.02em;
+
+  --u4: calc(4 * var(--px));
+  --u8: calc(8 * var(--px));
+  --u12: calc(12 * var(--px));
+  --u16: calc(16 * var(--px));
+  --u24: calc(24 * var(--px));
+  --u32: calc(32 * var(--px));
+  --u48: calc(48 * var(--px));
+  --u64: calc(64 * var(--px));
+  --u72: calc(72 * var(--px));
+  --u96: calc(96 * var(--px));
+  --u104: calc(104 * var(--px));
+  --u120: calc(120 * var(--px));
+  --u144: calc(144 * var(--px));
+  --u192: calc(192 * var(--px));
+  --u240: calc(240 * var(--px));
+
+  --dur-s: 0.4s;
+  --dur-m: 0.8s;
+  --dur-l: 1.2s;
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.75, 0);
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  --font: 'Inter Tight Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --svh: 100vh;
+}
+
+@supports (height: 100svh) {
+  :root {
+    --svh: 100svh;
+  }
+}
+
+/* tablet: 4 columns, drawn on a 768px canvas */
+@media (max-width: 991px) {
+  :root {
+    --sr: 7.68;
+    --cols: 4;
+    --gap: calc(12 * var(--px));
+    --h1: calc(68 * var(--px));
+    --h2: calc(40 * var(--px));
+    --p1: calc(14 * var(--px));
+  }
+}
+
+/* phone: drawn on a 393px canvas */
+@media (max-width: 599px) {
+  :root {
+    --sr: 3.93;
+    --h1: calc(44 * var(--px));
+    --h1-lh: 0.9;
+    --h2: calc(30 * var(--px));
+    --p1: calc(12 * var(--px));
+    --p1-lh: 1.15;
+  }
+}
+
+/* ── Themes — port wine & bone ─────────────────────────────── */
+:root,
+html[data-theme='port'] {
+  --bg: #3a0a10;
+  --bg-2: #45101a;
+  --fg: #f3ebe1;
+  --fg-rgb: 243, 235, 225;
+  --accent: #e2323e;
+  --deep: #12030a;
+  --nav-1: #d7c5b3;
+  --nav-2: #e5d8ca;
+  --nav-3: #f3ebe1;
+  --nav-ink: #3a0a10;
+  --grain: 0.09;
+}
+
+html[data-theme='bone'] {
+  --bg: #f3ebe1;
+  --bg-2: #e9ddcf;
+  --fg: #3a0a10;
+  --fg-rgb: 58, 10, 16;
+  --accent: #b3141f;
+  --deep: #1e0508;
+  --nav-1: #d3c2b0;
+  --nav-2: #ddcfc0;
+  --nav-3: #e8ddd1;
+  --nav-ink: #3a0a10;
+  --grain: 0.06;
+}
+
+html[data-theme='crimson'] {
+  --bg: #a3121c;
+  --bg-2: #b0161f;
+  --fg: #f7efe6;
+  --fg-rgb: 247, 239, 230;
+  --accent: #1a0306;
+  --deep: #1a0306;
+  --nav-1: #3a0a10;
+  --nav-2: #4b0d15;
+  --nav-3: #5e111b;
+  --nav-ink: #f7efe6;
+  --grain: 0.08;
+}
+
+html[data-theme='noir'] {
+  --bg: #140406;
+  --bg-2: #1f070a;
+  --fg: #f3ebe1;
+  --fg-rgb: 243, 235, 225;
+  --accent: #d2232e;
+  --deep: #000000;
+  --nav-1: #b3141f;
+  --nav-2: #c71b26;
+  --nav-3: #d9252f;
+  --nav-ink: #f7efe6;
+  --grain: 0.1;
+}
+
+html[data-theme='rose'] {
+  --bg: #e8cfc6;
+  --bg-2: #dfc0b5;
+  --fg: #3a0a10;
+  --fg-rgb: 58, 10, 16;
+  --accent: #b3141f;
+  --deep: #1e0508;
+  --nav-1: #caa597;
+  --nav-2: #d5b3a7;
+  --nav-3: #dfc2b8;
+  --nav-ink: #3a0a10;
+  --grain: 0.06;
+}
+
+:root {
+  --fg-2: rgba(var(--fg-rgb), 0.55);
+  --fg-3: rgba(var(--fg-rgb), 0.32);
+  --line: rgba(var(--fg-rgb), 0.34);
+  --line-10: rgba(var(--fg-rgb), 0.12);
+  --fill-5: rgba(var(--fg-rgb), 0.06);
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 1vw;
+  background-color: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0s;
+}
+
+body {
+  font-family: var(--font);
+  font-size: var(--p1);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--fg);
+  background-color: var(--bg);
+  overflow-x: clip;
+  min-height: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+}
+
+::selection {
+  color: var(--bg);
+  background: var(--fg);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+canvas,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+}
+
+html.is-transitioning,
+html.is-transitioning * {
+  cursor: progress !important;
+}
+
+/* Elements revealed by JS stay hidden until their animation starts */
+[data-reveal] {
+  visibility: hidden;
+}
+
+/* ── Type ──────────────────────────────────────────────────── */
+.h1 {
+  font-size: var(--h1);
+  line-height: var(--h1-lh);
+  letter-spacing: var(--h1-ls);
+  font-weight: 500;
+}
+
+.h2 {
+  font-size: var(--h2);
+  line-height: var(--h2-lh);
+  letter-spacing: var(--h2-ls);
+  font-weight: 500;
+}
+
+.p1 {
+  font-size: var(--p1);
+  line-height: var(--p1-lh);
+  letter-spacing: var(--p1-ls);
+  font-weight: 500;
+}
+
+.fg-2 {
+  color: var(--fg-2);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* masked lines produced by SplitText (mask: 'lines') */
+.line-mask {
+  padding-block: 0.12em;
+  margin-block: -0.12em;
+}
+
+/* ── Grid ──────────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gap);
+  padding-inline: var(--pad);
+  width: 100%;
+}
+
+.cell {
+  grid-column: var(--c, auto);
+  min-width: 0;
+}
+
+@media (max-width: 991px) {
+  .cell {
+    grid-column: var(--mc, 1 / -1);
+  }
+}
+
+.only-desktop {
+  display: revert;
+}
+
+.only-mobile {
+  display: none !important;
+}
+
+@media (max-width: 991px) {
+  .only-desktop {
+    display: none !important;
+  }
+
+  .only-mobile {
+    display: revert !important;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
